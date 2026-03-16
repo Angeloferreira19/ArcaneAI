@@ -26,7 +26,7 @@ cd ArcaneAI
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
 # venv\\Scripts\\activate  # Windows
-pip install -r backend/requirements.txt
+pip install -r backend/requirements.txt --index-url https://pypi.org/simple
 
 # Migrações DB (SQLite local)
 alembic upgrade head
