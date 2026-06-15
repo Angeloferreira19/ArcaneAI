@@ -109,4 +109,4 @@ cp .env.example .env
 # Executar
 uvicorn main:app --reload
 ```
-## ArcaneAI — Onde suas escolhas moldam mundos que nunca esquecem.
+## ✨ArcaneAI — Onde suas escolhas moldam mundos que nunca esquecem.
