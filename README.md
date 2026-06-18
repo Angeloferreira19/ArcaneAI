@@ -1,112 +1,290 @@
-# 🧙‍♂️ ArcaneAI - RPG Narrativo Persistente com IA
+# 🧙 ArcaneAI
+## ✨Onde suas escolhas moldam mundos que nunca esquecem.
 
-**ArcaneAI** é uma plataforma de RPG narrativo solo/assistido por IA projetada para campanhas longas, com **memória persistente real** e continuidade entre sessões.
+> Sistema de RPG Narrativo Inteligente com Memória Persistente e Arquitetura Multi-Agente.
 
-Diferente de chatbots tradicionais, o Arcane mantém estado completo da campanha (personagens, eventos, mundo e histórico), permitindo que decisões tenham consequências duradouras e que o mundo evolua de forma consistente.
+Arcane é uma plataforma de RPG assistida por Inteligência Artificial projetada para criar campanhas persistentes, narrativas dinâmicas e mundos evolutivos.
 
----
-
-## ✨ Principais Funcionalidades
-
-### **Gestão de Usuários**
-- Cadastro e autenticação
-- Gerenciamento de perfil
-
-### **Campanhas Persistentes**
-- Criação, listagem e continuação de campanhas
-- Sessões narrativas (iniciar, pausar e encerrar)
-- Resumos automáticos de sessões
-
-### **Personagens**
-- Criação e evolução de personagens
-- Atributos, backstory e progressão ao longo da campanha
-
-### **Narrativa Dinâmica**
-- Interação com narrador virtual via IA
-- Histórico completo de mensagens
-- Registro de eventos importantes
-
-### **Memória e Continuidade**
-- Persistência de eventos e resumos
-- Recuperação contextual para manter coerência narrativa
-- Adaptação baseada no histórico da campanha
+Diferente de soluções tradicionais baseadas apenas em contexto temporário, o Arcane utiliza um sistema de memória persistente para manter informações relevantes ao longo de múltiplas sessões, permitindo campanhas de longa duração com continuidade narrativa.
 
 ---
 
-## 🏗️ Arquitetura
+# 🎯 Objetivo
 
-O projeto segue **arquitetura em camadas** com clara separação de responsabilidades:
-
-- **API Layer** (FastAPI)
-- **Service Layer** (lógica de negócio)
-- **Domain Layer** (entidades do modelo)
-- **Persistence Layer** (MongoDB)
-- **AI Integration Layer** (suporte a múltiplos provedores de LLM)
-
-### Modelo de Domínio
-
-![Diagrama de Domínio](attachments/Diagrama%20de%20Dominio%20-%20Arcane.png)
-
-**Entidades principais:**
-
-- **User** — Jogador
-- **Campaign** — Aventura persistente
-- **Character** — Personagens jogáveis
-- **Session** — Sessão de jogo (agrupa interações)
-- **Message** — Interações (User / Assistant / System)
-- **Event** — Acontecimentos importantes com importância
-- **Role** — Enumeração para papéis nas mensagens
+Criar uma experiência de RPG em que a Inteligência Artificial atua como Mestre de Jogo (Game Master), conduzindo aventuras personalizadas, adaptando a narrativa às escolhas dos jogadores e preservando a evolução do mundo ao longo do tempo.
 
 ---
 
-## 📋 Requisitos
+# ✨ Funcionalidades
 
-### Funcionais (MVP)
-- Cadastro e login
-- CRUD de campanhas e personagens
-- Sessões narrativas com IA
-- Histórico e eventos persistentes
-- Geração de respostas narrativas coerentes
+## 🎮 Sistema de Campanhas
 
-### Não Funcionais
-- Persistência robusta (MongoDB)
-- Arquitetura escalável e modular
-- Suporte a múltiplos provedores de LLM
-- Execução via Docker
-- Segurança (senhas hasheadas + autenticação)
+- Criação de campanhas persistentes
+- Gerenciamento de sessões
+- Histórico narrativo
+- Continuidade entre sessões
 
 ---
 
-## 🛠️ Tecnologias
+## 👤 Sistema de Personagens
 
-- **Backend**: Python + FastAPI
-- **Banco de Dados**: MongoDB
-- **Frontend**: React (em desenvolvimento)
-- **IA**: Integração flexível com provedores de LLM (OpenAI, Ollama, Groq, etc.)
-- **Infraestrutura**: Docker
+- Criação de personagens
+- Evolução de atributos
+- Histórico individual
+- Associação a campanhas
 
 ---
 
-## 🚀 Como Executar (Início Rápido)
+## 🧠 Sistema de Memória
 
-```bash
-# Clone o repositório
-git clone <url-do-repositorio>
-cd ArcaneAI
+O Arcane separa informações em diferentes níveis de persistência:
 
-# Backend
-cd backend
-python -m venv venv
-source venv/bin/activate  # ou venv\Scripts\activate no Windows
-pip install -r requirements.txt
+### Messages
 
-# MongoDB (via Docker)
-docker run -d -p 27017:27017 --name mongodb mongo:latest
+Histórico completo da interação entre jogador e IA.
 
-# Variáveis de ambiente
-cp .env.example .env
+### Events
 
-# Executar
-uvicorn main:app --reload
+Acontecimentos relevantes registrados durante a campanha.
+
+Exemplos:
+
+- Missões concluídas
+- Descoberta de locais
+- Combates importantes
+- Mudanças políticas
+
+### Memories
+
+Conhecimento consolidado da campanha.
+
+Exemplos:
+
+- "Kael tornou-se aliado do Reino de Eldoria."
+- "A cidade de Valenor foi destruída."
+- "A Guilda dos Magos considera o grupo uma ameaça."
+
+---
+
+## 🤖 Sistema Multi-Agente
+
+### GameMasterAgent
+
+Responsável pela condução da narrativa.
+
+Funções:
+
+- Interpretar ações dos jogadores
+- Gerar respostas narrativas
+- Controlar eventos da campanha
+
+### MemoryAgent
+
+Responsável pela gestão do conhecimento da campanha.
+
+Funções:
+
+- Recuperar memórias relevantes
+- Consolidar eventos
+- Atualizar contexto narrativo
+
+### WorldBuilderAgent
+
+Responsável pela expansão do mundo.
+
+Funções:
+
+- Criação de locais
+- Construção de lore
+- Geração de conteúdo narrativo
+
+---
+
+# 🏗 Arquitetura
+
+O projeto segue uma Arquitetura em Camadas (Layered Architecture).
+
+```text
+Frontend (React)
+        ↓
+API Layer (FastAPI)
+        ↓
+Application Layer (Services)
+        ↓
+Domain Layer
+        ↓
+Infrastructure Layer
 ```
-## ✨ArcaneAI — Onde suas escolhas moldam mundos que nunca esquecem.
+
+---
+
+## Fluxo Principal
+
+```text
+Jogador
+   ↓
+Frontend
+   ↓
+API
+   ↓
+NarrativeService
+   ↓
+MemoryService
+   ↓
+MemoryAgent
+   ↓
+GameMasterAgent
+   ↓
+LLM Provider
+   ↓
+Resposta ao Jogador
+```
+
+---
+
+# 🗄 Modelo de Dados
+
+O Arcane utiliza MongoDB com estratégia 100% referencial.
+
+Coleções principais:
+
+```text
+users
+campaigns
+sessions
+characters
+messages
+events
+memories
+```
+
+Relacionamentos:
+
+```text
+User
+ └── Campaign
+        ├── Character
+        ├── Session
+        │      ├── Message
+        │      └── Event
+        │
+        └── Memory
+```
+
+---
+
+# ⚙️ Stack Tecnológica
+
+## Backend
+
+- Python
+- FastAPI
+- MongoDB
+- Pydantic
+
+## Frontend
+
+- React
+- TypeScript
+
+## Inteligência Artificial
+
+- OpenAI
+- Google Gemini
+
+Arquitetura preparada para múltiplos provedores de LLM.
+
+---
+
+# 📂 Estrutura do Projeto
+
+```text
+arcane/
+
+├── frontend/
+│
+├── backend/
+│
+├── docs/
+│   ├── visao.md
+│   ├── requisitos.md
+│   ├── dominio.md
+│   ├── arquitetura.md
+│   ├── modelo-logico-banco.md
+│   └── roadmap.md
+│
+└── README.md
+```
+
+---
+
+# 🚀 Roadmap
+
+## v0.1 - Fundação
+
+- Estrutura FastAPI
+- MongoDB
+- Autenticação
+- Arquitetura em camadas
+
+## v0.2 - Campanhas
+
+- CRUD de campanhas
+- CRUD de personagens
+
+## v0.3 - Sessões
+
+- Sistema de sessões
+- Histórico de mensagens
+- Registro de eventos
+
+## v0.4 - IA
+
+- LLM Provider
+- Integração OpenAI
+- Integração Gemini
+- GameMasterAgent
+
+## v0.5 - Memória
+
+- MemoryAgent
+- MemoryService
+- Memórias persistentes
+
+## v0.6 - MVP
+
+- Campanhas completas
+- Continuidade narrativa
+- Sistema funcional para usuários
+
+---
+
+# 🔥 Diferenciais
+
+- Memória persistente de longo prazo
+- Sistema Multi-Agente
+- Arquitetura desacoplada
+- Suporte a múltiplos provedores de IA
+- Preparado para RAG e memória vetorial
+- Campanhas de longa duração
+
+---
+
+# 📖 Documentação
+
+Toda a documentação técnica está disponível na pasta:
+
+```text
+docs/
+```
+
+Incluindo:
+
+- Documento de Visão
+- Requisitos
+- Modelo de Domínio
+- Arquitetura
+- Modelo Lógico do Banco
+- Roadmap
+
+---
