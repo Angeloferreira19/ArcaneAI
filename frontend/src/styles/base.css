@@ -1,0 +1,78 @@
+@import './variables.css';
+@import './components.css';
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  color: var(--clr-text, #ffffff);
+  background-color: var(--clr-bg-deep, #060407) !important;
+}
+
+/* 1. GRADIENTE DINÂMICO DE FUNDO (A NÉVOA ARCANA) */
+body {
+  position: relative;
+  background-image: 
+    radial-gradient(at 15% 25%, rgba(255, 0, 127, 0.45) 0px, transparent 55%),
+    radial-gradient(at 85% 15%, rgba(148, 0, 211, 0.45) 0px, transparent 55%),
+    radial-gradient(at 35% 85%, rgba(0, 191, 255, 0.45) 0px, transparent 55%),
+    radial-gradient(at 75% 75%, rgba(75, 0, 130, 0.35) 0px, transparent 55%);
+  background-size: 100% 100%;
+  animation: moverGradiente 15s ease infinite alternate;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* 2. TEXTURA DE CINTILAÇÃO (RUÍDO SUTIL) */
+body::before {
+  content: "";
+  position: fixed; 
+  top: 0; left: 0; width: 100%; height: 100%;
+  opacity: 0.03;
+  pointer-events: none; 
+  z-index: 0; 
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://w3.org id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* 3. CAMADA GLOBAL DE PARTÍCULAS FLUTUANTES (MUITAS PARTÍCULAS) */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  
+  /* Gradientes inseridos no lugar correto */
+  background-image: 
+    radial-gradient(circle, rgba(255, 0, 127, 0.7) 1.5px, transparent 2.5px),
+    radial-gradient(circle, rgba(0, 191, 255, 0.6) 2.5px, transparent 4px),
+    radial-gradient(circle, rgba(148, 0, 211, 0.7) 1.5px, transparent 2.5px),
+    radial-gradient(circle, rgba(255, 0, 127, 0.5) 3.5px, transparent 5px),
+    radial-gradient(circle, rgba(0, 191, 255, 0.6) 1.5px, transparent 2.5px),
+    radial-gradient(circle, rgba(148, 0, 211, 0.5) 4px, transparent 6px);
+  
+  background-size: 250px 250px, 320px 320px, 280px 280px, 400px 400px, 200px 200px, 450px 450px;
+  background-position: 15% 10%, 45% 65%, 70% 35%, 25% 80%, 85% 15%, 50% 50%;
+  animation: flutuarParticulasGlobais 20s linear infinite;
+  opacity: 0.85;
+}
+
+/* Força o conteúdo a renderizar por cima do z-index das partículas */
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ANIMAÇÕES */
+@keyframes moverGradiente {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes flutuarParticulasGlobais {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(30px, -40px) rotate(5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}

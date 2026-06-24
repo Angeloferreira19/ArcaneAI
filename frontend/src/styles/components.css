@@ -1,0 +1,31 @@
+.btn-primary, .btn-secondary {
+  font: inherit;
+  padding: 0.8rem 1.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  align-items: center;
+}
+
+.btn-primary {
+  background: var(--clr-pink);
+  color: white;
+  border: none;
+  box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+}
+
+.btn-primary:hover {
+  background: var(--clr-purple);
+  box-shadow: 0 0 25px var(--clr-purple);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  border: 2px solid var(--clr-blue);
+  background: transparent;
+}
+.btn-secondary:hover {
+  box-shadow: 0 0 25px var(--clr-accent);
+  transform: translateY(-2px);
+  background: var(--clr-blue);
+}

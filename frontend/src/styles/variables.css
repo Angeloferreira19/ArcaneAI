@@ -1,0 +1,23 @@
+:root {
+  /* Cores Temáticas Arcane AI */
+  --clr-bg-deep: #060407;
+  --clr-pink: #ff007f;
+  --clr-purple: #9400d3;
+  --clr-blue: #00bfff;
+  --clr-dark-blue: #070744;
+  --clr-text: #ffffff;
+  --clr-green: #00ff7f;
+  --clr-text-muted: #b3b0b8;
+  --clr-accent: #49cfff;
+  --clr-gold: #FFD700;
+  --clr-error: #ff0004;
+  --clr-gold-gradient: linear-gradient(90deg, #FFD700, #FF8C00);
+
+  /* Efeito de Vidro (Glassmorphism) para seus futuros Modais de Login */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(12px);
+
+  /* Transições padrão */
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

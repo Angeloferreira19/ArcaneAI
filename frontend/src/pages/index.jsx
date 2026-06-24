@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Landing from '../components/landing'
 import AuthForm from '../components/auth_form'
 import Dashboard from '../components/dashboard'
+import Header from '../components/header'
+import Footer from '../components/footer'
+import headerStyles from '../components/header.module.css'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -86,7 +89,7 @@ export default function Home() {
   }
 
   if (user) {
-    return <Dashboard user={user} onLogout={handleLogout} />
+    return <Dashboard user={user} onLogout={handleLogout} onBrandClick={() => { setMessage(''); setView('landing') }} />
   }
 
   if (view === 'landing') {
@@ -100,10 +103,10 @@ export default function Home() {
 
   return (
     <div className="app-shell">
-      <header className="app-header">
+      <Header title="Arcane AI" user={user} onBrandClick={() => { setMessage(''); setView(user ? 'dashboard' : 'landing') }}>
         <button
           type="button"
-          className={view === 'login' ? 'active' : ''}
+          className={view === 'login' ? headerStyles.active : ''}
           onClick={() => {
             setView('login')
             setMessage('')
@@ -113,7 +116,7 @@ export default function Home() {
         </button>
         <button
           type="button"
-          className={view === 'register' ? 'active' : ''}
+          className={view === 'register' ? headerStyles.active : ''}
           onClick={() => {
             setView('register')
             setMessage('')
@@ -121,7 +124,7 @@ export default function Home() {
         >
           Registrar
         </button>
-      </header>
+      </Header>
 
       <AuthForm
         mode={view}
@@ -131,6 +134,8 @@ export default function Home() {
         loading={loading}
         message={message}
       />
+      <Footer />
     </div>
+    
   )
 }
