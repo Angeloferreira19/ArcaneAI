@@ -72,9 +72,30 @@ export default function Home() {
       const result = await res.json()
       if (!res.ok) throw new Error(result.detail || 'Erro ao registrar')
 
-      setMessage('Cadastro bem-sucedido! Faça login para continuar.')
+      setMessage('Cadastro concluído com sucesso! Entrando...')
       setForm({ username: '', email: '', password: '' })
-      setView('login')
+
+      setTimeout(async () => {
+        try {
+          const loginRes = await fetch(`${API_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: form.email,
+              password: form.password
+            }),
+          })
+
+          const loginResult = await loginRes.json()
+          if (!loginRes.ok) throw new Error(loginResult.detail || 'Erro ao autenticar')
+
+          localStorage.setItem('arcane_token', loginResult.access_token)
+          setUser(loginResult.user)
+          setView('dashboard')
+        } catch (err) {
+          setMessage(err.message)
+        }
+      }, 5000)
     } catch (err) {
       setMessage(err.message)
     } finally {

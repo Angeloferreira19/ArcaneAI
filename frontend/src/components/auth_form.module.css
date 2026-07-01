@@ -102,10 +102,17 @@ button.btn-primary:disabled {
 
 .message {
   margin-top: 1rem;
-  color: var(--clr-error);
   font-size: 0.95rem;
   text-align: center;
   font: inherit;
+}
+
+.message-error {
+  color: var(--clr-error);
+}
+
+.message-success {
+  color: var(--clr-green);
 }
 
 @media (max-width: 520px) {

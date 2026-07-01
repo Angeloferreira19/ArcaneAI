@@ -3,6 +3,9 @@ import Header from './header.jsx'
 import Footer from './footer.jsx'
 
 export default function AuthForm({ mode, form, onChange, onSubmit, loading, message, onSwitchMode }) {
+    const isSuccessMessage = message?.toLowerCase().includes('sucesso') || message?.toLowerCase().includes('concluído') ||
+     message?.toLowerCase().includes('bem-vindo') || message?.toLowerCase().includes('entrando');
+
     return (
         <main className={styles['auth-form-shell']}>
             <section className={styles['card']}>
@@ -49,7 +52,11 @@ export default function AuthForm({ mode, form, onChange, onSubmit, loading, mess
                         {loading ? 'Processando...' : mode === 'login' ? 'Entrar' : 'Registrar'}
                     </button>
 
-                    {message && <p className={styles['message']}>{message}</p>}
+                    {message && (
+                        <p className={`${styles.message} ${isSuccessMessage ? styles['message-success'] : styles['message-error']}`}>
+                            {message}
+                        </p>
+                    )}
                 </form>
             </section>
         </main>
