@@ -1,263 +1,112 @@
-# **Arquitetura do Sistema \- Arcane**
+# Arquitetura do Sistema - Arcane
 
-## **Visão Geral**
+## Visão geral
 
-O Arcane é projetado utilizando uma arquitetura em camadas (Layered Architecture), com o objetivo de promover separação de responsabilidades, escalabilidade e facilidade de manutenção.
-
-A arquitetura organiza o sistema em componentes independentes, permitindo que mudanças em uma parte da aplicação tenham impacto mínimo nas demais.
-
-Além disso, o sistema foi concebido para suportar múltiplos provedores de Inteligência Artificial, memória persistente e campanhas narrativas de longa duração.
+O Arcane foi estruturado com uma arquitetura em camadas para separar responsabilidades entre frontend, API, serviços e persistência. A solução atual já consolida a base inicial de autenticação e está preparada para expandir em direção a campanhas, sessões e IA.
 
 ---
 
-# **Objetivos da Arquitetura**
+## Objetivos da arquitetura
 
-* Separar regras de negócio da infraestrutura.  
-* Facilitar manutenção e evolução do sistema.  
-* Permitir integração com diferentes provedores de IA.  
-* Garantir persistência de campanhas e sessões.  
-* Suportar memória de curto e longo prazo.  
-* Possibilitar futuras expansões sem reestruturações significativas.
+- separar regras de negócio da infraestrutura;
+- facilitar manutenção e evolução do sistema;
+- permitir integração com múltiplos provedores de IA no futuro;
+- preservar uma base sólida para campanhas narrativas persistentes.
 
 ---
 
-# **Arquitetura Geral**
+## Arquitetura atual
 
-Frontend (React)  
-        ↓  
-API Layer (FastAPI)  
-        ↓  
-Application Layer (Serviços)  
-        ↓  
-Domain Layer  
-        ↓  
-Infrastructure Layer
-
----
-
-# **Diagrama de Arquitetura**
-
-![][image1]
+```text
+Frontend (Next.js)
+        ↓
+API Layer (FastAPI)
+        ↓
+Application Layer (Services)
+        ↓
+Infrastructure Layer (MongoDB + Repositories)
+```
 
 ---
 
-# **Camadas do Sistema**
+## Camadas do sistema
 
-## **Frontend**
-
+### Frontend
 Responsável pela interface do usuário.
 
-### **Tecnologia**
+Tecnologias:
+- Next.js
+- React
+- CSS Modules
 
-* React
+Responsabilidades atuais:
+- exibir landing page;
+- permitir cadastro e login;
+- exibir dashboard inicial após autenticação.
 
-### **Responsabilidades**
-
-* Exibir campanhas.  
-* Exibir sessões.  
-* Permitir criação de personagens.  
-* Enviar ações para a narrativa.  
-* Exibir respostas geradas pela IA.
-
----
-
-## **API Layer**
-
+### API Layer
 Responsável pela comunicação HTTP entre cliente e backend.
 
-### **Tecnologia**
+Tecnologias:
+- FastAPI
 
-* FastAPI
+Responsabilidades atuais:
+- receber requisições de autenticação;
+- validar dados com Pydantic;
+- encaminhar operações para os services;
+- retornar respostas ao frontend.
 
-### **Responsabilidades**
+### Application Layer
+Centraliza os casos de uso do sistema.
 
-* Receber requisições.  
-* Validar dados de entrada.  
-* Encaminhar operações para os serviços apropriados.  
-* Retornar respostas ao frontend.
+Componentes atuais:
+- UserService
+- UserRepository
 
----
+Próximos componentes esperados:
+- CampaignService
+- CharacterService
+- SessionService
+- NarrativeService
+- MemoryService
 
-## **Application Layer**
+### Infrastructure Layer
+Responsável pela persistência e integração com recursos externos.
 
-Camada responsável pela implementação dos casos de uso.
+Tecnologias:
+- MongoDB
+- repositórios dedicados
 
-É o centro de orquestração do sistema.
-
-### **CampaignService**
-
-Responsável pelo gerenciamento das campanhas.
-
-### **SessionService**
-
-Responsável pela abertura, encerramento e recuperação de sessões.
-
-### **CharacterService**
-
-Responsável pelo gerenciamento de personagens.
-
-### **NarrativeService**
-
-Responsável pelo fluxo narrativo principal.
-
-Coordena:
-
-* Recuperação de contexto.  
-* Comunicação com agentes.  
-* Persistência de resultados.
-
-### **MemoryService**
-
-Responsável por:
-
-* Recuperar contexto narrativo.  
-* Salvar eventos importantes.  
-* Gerar resumos.  
-* Preparar informações para os agentes.
+Entidades já previstas ou parcialmente implementadas:
+- User
+- Campaign
+- Character
+- Session
+- Message
+- Event
+- Memory
 
 ---
 
-## **Domain Layer**
+## Fluxo atual de execução
 
-Representa as entidades centrais do negócio.
-
-Essa camada não possui dependência de banco de dados, APIs externas ou modelos de IA.
-
-### **Entidades**
-
-#### **User**
-
-Representa o jogador.
-
-#### **Campaign**
-
-Representa uma campanha persistente.
-
-#### **Session**
-
-Representa uma sessão narrativa dentro de uma campanha.
-
-#### **Character**
-
-Representa personagens da campanha.
-
-#### **Message**
-
-Representa interações entre jogador e sistema.
-
-#### **Event**
-
-Representa acontecimentos relevantes da narrativa.
+1. O usuário acessa a interface.
+2. O frontend envia requisições para a API.
+3. O backend valida os dados e executa a regra de negócio.
+4. Os repositórios persistem as informações no MongoDB.
+5. O frontend exibe o resultado para o usuário.
 
 ---
 
-## **Agents Layer**
+## Evolução prevista
 
-Camada responsável pela organização das inteligências especializadas.
+A arquitetura foi pensada para evoluir naturalmente para:
+- campanhas persistentes;
+- sessões narrativas;
+- agentes de IA;
+- memória contextual e semântica.
 
-Os agentes não acessam banco de dados diretamente.
-
-Toda persistência e recuperação de dados ocorre através dos serviços da Application Layer.
-
-### **GameMasterAgent**
-
-Responsável por:
-
-* Conduzir a narrativa.  
-* Interpretar ações do jogador.  
-* Gerar respostas narrativas.
-
-### **MemoryAgent**
-
-Responsável por:
-
-* Selecionar memórias relevantes.  
-* Organizar contexto narrativo.  
-* Auxiliar na construção do prompt enviado ao modelo.
-
-### **WorldBuilderAgent**
-
-Responsável por:
-
-* Gerar conteúdo de apoio.  
-* Criar locais.  
-* Criar elementos narrativos.  
-* Expandir o mundo da campanha.
-
----
-
-## **LLM Provider**
-
-Camada de abstração para comunicação com modelos de linguagem.
-
-Seu objetivo é desacoplar o sistema de um fornecedor específico.
-
-### **Provedores Compatíveis**
-
-* OpenAI  
-* Gemini  
-* Ollama  
-* Outros provedores futuros
-
-### **Benefícios**
-
-* Flexibilidade.  
-* Facilidade de substituição.  
-* Redução de acoplamento.
-
----
-
-## **Infrastructure Layer**
-
-Responsável pela integração com recursos externos.
-
-### **Repositories**
-
-Implementam a persistência das entidades do domínio.
-
-Exemplos:
-
-* CampaignRepository  
-* SessionRepository  
-* CharacterRepository  
-* MessageRepository  
-* EventRepository
-
-### **Banco de Dados**
-
-MongoDB é utilizado para armazenamento persistente das informações da aplicação.
-
-Coleções previstas:
-
-* users  
-* campaigns  
-* sessions  
-* characters  
-* messages  
-* events
-
----
-
-# **Fluxo Principal de Execução**
-
-## **Interação Narrativa**
-
-1. O jogador envia uma ação.  
-2. A API recebe a requisição.  
-3. O NarrativeService inicia o processamento.  
-4. O MemoryService recupera o contexto relevante.  
-5. O MemoryAgent organiza as informações necessárias.  
-6. O GameMasterAgent monta a instrução narrativa.  
-7. O LLM Provider gera a resposta.  
-8. O NarrativeService registra mensagens e eventos.  
-9. Os Repositories persistem os dados no MongoDB.  
-10. A resposta é retornada ao frontend.
-
----
-
-# **Benefícios da Arquitetura**
-
-* Separação clara de responsabilidades.  
+Essa estrutura já permite crescer sem quebrar a base atual de autenticação e interface.  
 * Baixo acoplamento entre componentes.  
 * Facilidade de manutenção.  
 * Facilidade de testes.  

@@ -1,210 +1,129 @@
-# **Roadmap \- Arcane**
+# Roadmap - Arcane
 
-## **Versão 0.1 \- Fundação** ✅
+## Status atual (Julho de 2026)
+
+O projeto já passou da fase inicial de estruturação e possui uma base funcional de autenticação e interface. A próxima etapa é consolidar as campanhas e personagens.
+
+### Concluído
+- backend com FastAPI funcional
+- cadastro e login de usuários
+- JWT e autenticação protegida
+- integração inicial frontend/backend
+- dashboard básico pós-login
+- ambiente com Docker Compose
+
+### Em andamento
+- refinamento visual do frontend
+- melhoria do fluxo de cadastro e login
+- preparação da camada de campanhas
+
+---
+
+## Versão 0.1 - Fundação ✅
 
 Objetivo: estabelecer a base técnica do sistema e tornar o projeto executável localmente.
 
-### **Backend** ✅ COMPLETO
+### Backend
+- FastAPI configurado
+- rotas de autenticação implementadas
+- MongoDB conectado
+- arquitetura em camadas iniciada
 
-* ✅ Configurar FastAPI com rotas básicas e documentação automática
-* ✅ Configurar MongoDB com conexão parametrizada por ambiente
-* ✅ Implementar arquitetura em camadas: API, serviços, repositórios e schemas
-* ✅ Criar cadastro de usuário com hash de senha
-* ✅ Criar login com JWT (24h de expiração)
-* ✅ Validar dados de entrada com Pydantic
-* ✅ Criar endpoints iniciais: `GET /`, `GET /health`, `POST /auth/register`, `POST /auth/login`, `GET /auth/me`
-* ✅ Autenticação protegida com `@Depends(get_current_user)`
-* ✅ Tratamento de erros com `HTTPException`
+### Frontend
+- landing page
+- formulário de cadastro e login
+- dashboard inicial
+- integração com API de autenticação
 
-### **Frontend** ⏳ EM PROGRESSO
-
-* ⏳ Inicializar projeto React/Vite com estrutura de pastas
-* ⏳ Criar página de login e cadastro básico
-* ⏳ Implementar integração com API de autenticação
-* ⏳ Construir layout principal inicial com navegação básica
-* ⏳ Preparar o frontend para evolução com telas de campanhas e sessões
-
-### **Infraestrutura** ✅ COMPLETO
-
-* ✅ Criar `backend/.env.example` com variáveis essenciais
-* ✅ Configurar `backend/Dockerfile` para backend
-* ✅ Criar `docker-compose.yml` (raiz) com backend e MongoDB
-* ✅ Definir variáveis de ambiente e validação
-* ✅ `.gitignore` completo
-* ⏳ Documentar setup inicial no `README.md`
-
-### **Entrega 0.1**
-
-* ✅ Backend funcional com autenticação e persistência
-* ✅ Ambiente de desenvolvimento local com Docker
-* ⏳ Frontend inicial capaz de autenticar usuários
-* ⏳ Documentação de setup e execução
+### Infraestrutura
+- Docker Compose configurado
+- variáveis de ambiente organizadas
+- estrutura de projeto definida
 
 ---
 
-## **Versão 0.2 \- Campanhas e Personagens**
+## Versão 0.2 - Campanhas e Personagens ⏳
 
 Objetivo: permitir criação e gerenciamento de campanhas.
 
-### **Backend**
+### Backend
+- schema de campanha e personagem
+- repositories e services
+- endpoints para CRUD
+- associação entre usuário, campanha e personagem
 
-* Schema `CampaignCreate`, `CampaignResponse`
-* Schema `CharacterCreate`, `CharacterResponse`
-* Repository: `CampaignRepository`, `CharacterRepository`
-* Service: `CampaignService`, `CharacterService`
-* Endpoints: `POST /campaigns`, `GET /campaigns`, `GET /campaigns/{id}`, `DELETE /campaigns/{id}`
-* Endpoints: `POST /campaigns/{id}/characters`, `GET /campaigns/{id}/characters`
-* Associação entre usuário e campanha
-* Associação entre personagem e campanha
-
-### **Frontend**
-
-* Dashboard com lista de campanhas
-* Modal/Página para criar campanha
-* Modal/Página para criar personagem
-* Tela de detalhes da campanha
+### Frontend
+- dashboard com lista de campanhas
+- modal ou página para criar campanha
+- tela para criar personagem
+- visualização de detalhes da campanha
 
 ---
 
-## **Versão 0.3 \- Sessões Narrativas**
+## Versão 0.3 - Sessões Narrativas ⏳
 
 Objetivo: iniciar sessões jogáveis.
 
-### **Backend**
+### Backend
+- sessões de jogo
+- mensagens e eventos
+- persistência de histórico narrativo
 
-* Schema `SessionCreate`, `SessionResponse`
-* Schema `MessageCreate`, `MessageResponse`
-* Schema `EventCreate`, `EventResponse`
-* Repository: `SessionRepository`, `MessageRepository`, `EventRepository`
-* Service: `SessionService`, `MessageService`, `EventService`
-* Endpoints: `POST /sessions`, `POST /sessions/{id}/close`, `GET /sessions/{id}/messages`
-* Persistência de mensagens e eventos
-
-### **Frontend**
-
-* Tela de sessão com chat narrativo
-* Entrada de ações do jogador
-* Exibição de histórico de mensagens
-* Registro de eventos importantes
+### Frontend
+- tela de sessão com chat narrativo
+- entrada de ações do jogador
+- histórico de mensagens e eventos
 
 ---
 
-## **Versão 0.4 \- Integração com IA**
+## Versão 0.4 - Integração com IA ⏳
 
-Objetivo: introduzir geração narrativa.
+Objetivo: introduzir geração narrativa com modelos de linguagem.
 
-### **Backend**
+### Backend
+- provider abstrato para LLM
+- integração com OpenAI/Gemini
+- GameMasterAgent
+- NarrativeService
 
-* LLM Provider abstrato
-* Integração OpenAI
-* Integração Gemini (Google)
-* Interface para múltiplos provedores
-* `GameMasterAgent` para condução da narrativa
-* Service: `NarrativeService` orquestra IA + contexto
-
-### **Frontend**
-
-* Indicador de IA processando
-* Exibição de respostas geradas pela IA
-* UI para escolher provedor de IA (admin)
+### Frontend
+- indicador de processamento da IA
+- exibição de respostas geradas
+- seleção de provedor de IA
 
 ---
 
-## **Versão 0.5 \- Sistema de Memória**
+## Versão 0.5 - Sistema de Memória ⏳
 
-Objetivo: persistência narrativa.
+Objetivo: construir memória persistente para continuidade narrativa.
 
-### **Backend**
+### Backend
+- MemoryService
+- MemoryAgent
+- consolidação de eventos em memórias
+- recuperação de contexto semântico
 
-* Schema `MemoryCreate`, `MemoryResponse`
-* Repository: `MemoryRepository`
-* Service: `MemoryService` + `MemoryAgent`
-* Consolidação de eventos em memórias
-* Recuperação de contexto baseado em semântica
-* Histórico completo de mensagens
-
-### **Frontend**
-
-* Timeline de eventos da campanha
-* Visualização de memórias consolidadas
+### Frontend
+- timeline de eventos
+- visualização de memórias
 
 ---
 
-## **Versão 0.6 \- Campanhas Persistentes**
+## Versão 0.6+ - MVP Público ⏳
 
-Objetivo: continuidade entre sessões.
+Objetivo: transformar o projeto em uma versão utilizável e implantável.
 
-### **Funcionalidades**
+### Backend
+- testes unitários
+- logs e tratamento de erros
+- documentação da API
 
-* Resumo automático de sessões  
-### **Funcionalidades**
+### Frontend
+- telas completas e responsivas
+- estados de loading e erro
+- navegação entre telas
 
-* Resumo automático de sessões  
-* Atualização de memórias por sessão  
-* Contexto dinâmico baseado em histórico
-* Continuidade narrativa aprimorada
-
----
-
-## **Versão 0.7 \- MVP Público**
-
-Objetivo: primeira versão utilizável e implantável.
-
-### **Backend**
-
-* Testes unitários para camada de serviço
-* Tratamento de erros aprimorado
-* Logs estruturados
-* Validação de negócios
-* API documentation (Swagger/OpenAPI)
-
-### **Frontend**
-
-* Páginas todas funcionando
-* Responsividade mobile básica
-* Tratamento de erros visual
-* Loading states
-* Navegação entre telas
-
-### **Infraestrutura**
-
-* GitHub Actions para CI/CD
-* Testes automáticos no push
-* Build de imagem Docker automático
-* Deploy em staging
-
----
-
-## **Versão 0.8+ \- Futuro**
-
-### **Inteligência Artificial (RAG & Semântica)**
-
-* Sistema RAG (Retrieval-Augmented Generation)
-* Embeddings semânticos para busca de contexto
-* Memória vetorial para eventos relacionados
-* NPCs persistentes com histórico
-* Personagem dinâmico que aprende com sessões
-
-### **Mundo (Expansão Narrativa)**
-
-* Sistema de facções
-* Localizações com lore persistente
-* Inventário de itens
-* Sistema de missões
-* Relações políticas dinâmicas
-
-### **Multiplayer (Cooperação)**
-
-* Campanhas com múltiplos jogadores
-* Chat em tempo real
-* Compartilhamento de mundo
-* Sincronia de eventos
-* Roles e permissões por campanha
-
-### **Plataforma (Distribuição)**
-
-* Aplicativo mobile (React Native)
-* Deploy em nuvem (AWS/GCP/Azure)
-* Sistema de plugins para expansões
-* Monetização (premium features)
-* Community marketplace
+### Infraestrutura
+- CI/CD
+- deploy em ambiente de staging
+- build automático de imagem Docker
