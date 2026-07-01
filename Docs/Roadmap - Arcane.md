@@ -46,7 +46,7 @@ Objetivo: estabelecer a base técnica do sistema e tornar o projeto executável 
 
 Objetivo: permitir criação e gerenciamento de campanhas.
 
-### Backend
+### Backend ✅
 - schema de campanha e personagem
 - repositories e services
 - endpoints para CRUD

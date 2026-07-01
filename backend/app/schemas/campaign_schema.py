@@ -9,3 +9,5 @@ class CampaignResponse(BaseModel):
     id: str
     name: str
     description: Optional[str] = None
+    owner_id: str
+    character_ids: list[str] = []

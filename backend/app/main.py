@@ -1,8 +1,9 @@
 import os
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.user_routes import router as user_router
+from app.api.campaign_routes import router as campaign_router
+from app.api.character_routes import router as character_router
 
 app = FastAPI(
     title="Arcane API",
@@ -34,4 +35,5 @@ def health_check():
     return {"status": "Ok"}
 
 app.include_router(user_router, prefix="/auth", tags=["Auth"])
-
+app.include_router(campaign_router, prefix="/campaigns", tags=["Campaigns"])
+app.include_router(character_router, prefix="/characters", tags=["Characters"])
