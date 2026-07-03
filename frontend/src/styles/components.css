@@ -8,7 +8,7 @@
 }
 
 .btn-primary {
-  background: var(--clr-pink);
+  background: linear-gradient(135deg, var(--clr-pink), var(--clr-purple));
   color: white;
   border: none;
   box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
@@ -22,10 +22,12 @@
 
 .btn-secondary {
   border: 2px solid var(--clr-blue);
+  color: var(--clr-blue);
   background: transparent;
 }
 .btn-secondary:hover {
   box-shadow: 0 0 25px var(--clr-accent);
   transform: translateY(-2px);
-  background: var(--clr-blue);
+  color: #000000;
+  background: linear-gradient(135deg, var(--clr-blue), var(--clr-green));
 }

@@ -75,14 +75,14 @@
 }
 
 .nav button:hover {
-  background: rgba(255, 0, 127, 0.12);
+  background: linear-gradient(135deg, rgba(148, 0, 211, 0.2) 0%, rgba(148, 0, 211, 0.2) 40%, rgba(73, 207, 255, 0.2) 60%, rgba(73, 207, 255, 0.2) 100%);
   color: #ffffff;
-  box-shadow: 0 0 18px rgba(255, 0, 127, 0.22);
+  box-shadow: 0 0 18px rgba(148, 0, 211, 0.3);
 }
 
 .nav button.active {
-  background: var(--clr-dark-blue);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--clr-blue), var(--clr-green));
+  color: #000000;
   box-shadow: 0 0 20px rgba(0, 191, 255, 0.42);
 }
 

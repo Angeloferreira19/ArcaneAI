@@ -76,28 +76,29 @@ button.btn-primary {
   font-weight: 600;
   align-self: center;
   text-align: center;
+  align-items: center;
+  justify-content: center;
   font: inherit;
-  padding: 0.8rem 1.8rem;
-  border-radius: 8px;
+  padding: 0.75rem 1.2rem;
+  border-radius: 14px;
   cursor: pointer;
   transition: var(--transition-smooth);
-  align-items: center;
-  background: var(--clr-pink);
-  color: white;
   border: none;
-  box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+  background: linear-gradient(135deg, var(--clr-pink), var(--clr-purple));
+  color: white;
 }
+
 button.btn-primary:hover {
   background: var(--clr-purple);
+  color: #ffffff;
   box-shadow: 0 0 25px var(--clr-purple);
-  transform: translateY(-2px);
 }
 
 button.btn-primary:disabled {
   opacity: 0.7;
   cursor: not-allowed;
-  transform: none;
   box-shadow: none;
+  
 }
 
 .message {

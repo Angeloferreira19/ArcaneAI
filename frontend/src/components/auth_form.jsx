@@ -1,4 +1,4 @@
-import styles from './auth_form.module.css';
+import styles from './auth_form.module.css'
 import Header from './header.jsx'
 import Footer from './footer.jsx'
 
