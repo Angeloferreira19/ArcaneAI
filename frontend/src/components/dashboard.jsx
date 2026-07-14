@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Header from './header'
 import CampaignList from './campaign_list'
 import CampaignForm from './campaign_form'
@@ -11,31 +11,60 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 export default function Dashboard({ user, onLogout, onBrandClick }) {
   const [campaigns, setCampaigns] = useState([])
+  const [campaignsSelect, setCampaignsSelect] = useState([])
+  const [campaignsSelectLoading, setCampaignsSelectLoading] = useState(false)
+
   const [characters, setCharacters] = useState([])
   const [loading, setLoading] = useState(true)
   const [loadingCharacters, setLoadingCharacters] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isModalOpenCampaigns, setIsModalOpenCampaigns] = useState(false)
+  const [campaignPage, setCampaignPage] = useState(1)
+  const [campaignTotalPages, setCampaignTotalPages] = useState(1)
+  const [characterPage, setCharacterPage] = useState(1)
+  const [characterTotalPages, setCharacterTotalPages] = useState(1)
   const token = typeof window !== 'undefined' ? localStorage.getItem('arcane_token') : null
 
-  useEffect(() => {
-    async function fetchCampaigns() {
-      setLoading(true)
-      try {
-        const response = await fetch(`${API_URL}/campaigns?page=1&page_size=10`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        const data = await response.json()
-        setCampaigns(data.items || [])
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setLoading(false)
-      }
+  const fetchCampaigns = useCallback(async (page = 1) => {
+    setLoading(true)
+    try {
+      const response = await fetch(`${API_URL}/campaigns?page=${page}&page_size=3`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      const data = await response.json()
+      setCampaigns(data.items || [])
+      setCampaignPage(data.current_page || page)
+      setCampaignTotalPages(data.pages || 1)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
     }
-
-    if (token) fetchCampaigns()
   }, [token])
+
+  const fetchCampaignsSelect = useCallback(async () => {
+    // Carrega campanhas completas para o seletor (não limitar a 4)
+    setCampaignsSelectLoading(true)
+    try {
+      const response = await fetch(`${API_URL}/campaigns`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      const data = await response.json()
+      setCampaignsSelect(data.items || data || [])
+    } catch (error) {
+      console.error(error)
+      setCampaignsSelect([])
+    } finally {
+      setCampaignsSelectLoading(false)
+    }
+  }, [token])
+
+  useEffect(() => {
+    if (!token) return
+    fetchCampaigns(1)
+    fetchCampaignsSelect()
+  }, [token, fetchCampaigns, fetchCampaignsSelect])
+
 
   const createCampaign = async (campaignData) => {
     const response = await fetch(`${API_URL}/campaigns`, {
@@ -65,25 +94,27 @@ export default function Dashboard({ user, onLogout, onBrandClick }) {
     return data
   }
 
-  const fetchCharacters = async () => {
+  const fetchCharacters = useCallback(async (page = 1) => {
     setLoadingCharacters(true)
     try {
-      const response = await fetch(`${API_URL}/characters?page=1&page_size=10`, {
+      const response = await fetch(`${API_URL}/characters?page=${page}&page_size=3`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       const data = await response.json()
       setCharacters(data.items || [])
+      setCharacterPage(data.current_page || page)
+      setCharacterTotalPages(data.pages || 1)
     } catch (error) {
       console.error(error)
       setCharacters([])
     } finally {
       setLoadingCharacters(false)
     }
-  }
+  }, [token])
 
   const openCharactersModal = async () => {
     setIsModalOpen(true)
-    await fetchCharacters()
+    await fetchCharacters(1)
   }
 
   const openCampaignsModal = async () => {
@@ -117,7 +148,7 @@ export default function Dashboard({ user, onLogout, onBrandClick }) {
 
           <article className={styles['dashboard-card']}>
             <h2>Criar personagem</h2>
-            <CharacterForm campaigns={campaigns} onCreate={createCharacter} />
+            <CharacterForm campaigns={campaignsSelect} onCreate={createCharacter} />
           </article>
 
           <article 
@@ -135,13 +166,30 @@ export default function Dashboard({ user, onLogout, onBrandClick }) {
           onClose={() => setIsModalOpenCampaigns(false)}
           campaigns={campaigns}
           loading={loading}
+          currentPage={campaignPage}
+          totalPages={campaignTotalPages}
+          onChangePage={async (next) => {
+            // Evita que uma resposta antiga sobrescreva a página atual
+            const pageToFetch = next
+            setCampaignPage(pageToFetch)
+            await fetchCampaigns(pageToFetch)
+          }}
         />
+
 
         <CharacterModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           characters={characters}
           loading={loadingCharacters}
+          currentPage={characterPage}
+          totalPages={characterTotalPages}
+          onChangePage={async (next) => {
+            const pageToFetch = next
+            setCharacterPage(pageToFetch)
+            await fetchCharacters(pageToFetch)
+          }}
+
         />
       </main>
     </div>

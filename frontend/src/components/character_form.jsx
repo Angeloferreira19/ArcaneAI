@@ -36,33 +36,35 @@ export default function CharacterForm({ campaigns, onCreate }) {
 
     if (campaigns.length === 0) {
         return (
-            <div>
-                <p>Nenhuma campanha disponível. Crie uma campanha primeiro.</p>
+            <div className={styles['form-container']}>
+                <p>{`Nenhuma campanha disponível. Crie uma campanha primeiro.`}</p>
             </div>
         )
     }
 
     return (
         <div className={styles['form-container']}>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Nome do Personagem:
-                    <input value={name}
-                        onChange={(e) => setName(e.target.value)} 
-                        required/>
-                </label>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <div className={styles['form-grid']}>
+                    <label className={styles.field}>
+                        <span className={styles.label}>Nome do Personagem</span>
+                        <input
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                            placeholder="Ex.: Arya" 
+                        />
+                    </label>
 
-                <label>
-                    Descrição:
-                    <textarea value={description}
-                        onChange={(e) => setDescription(e.target.value)} 
-                        required/>
-                </label>
+                <label className={styles.field}>
+                    <span className={styles.label}>Campanha</span>
+                    <select
+                        value={campaignId}
+                        onChange={(e) => setCampaignId(e.target.value)}
+                        required
+                        className={styles['campaign-select']}
 
-                <label>
-                    Campanha:
-                    <select value={campaignId} onChange={(e) => setCampaignId(e.target.value)} 
-                        required>
+                    >
                         {campaigns.map((campaign) => (
                             <option key={campaign.id} value={campaign.id}>
                                 {campaign.name}
@@ -71,7 +73,23 @@ export default function CharacterForm({ campaigns, onCreate }) {
                     </select>
                 </label>
 
-                <button type="submit">Criar Personagem</button>
+                </div>
+
+                <label className={styles.field}>
+                    <span className={styles.label}>Descrição</span>
+                    <textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                        rows={3}
+                        placeholder="Descreva o personagem..."
+                    />
+                </label>
+
+                <div className={styles.actions}>
+                    <button type="submit">Criar Personagem</button>
+                </div>
+
                 {message && (
                     <p className={`${styles['form-message']} ${isSuccessMessage ? styles.success : styles.error}`}>
                         {message}

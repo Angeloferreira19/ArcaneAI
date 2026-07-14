@@ -1,7 +1,17 @@
 import CampaignList from './campaign_list'
 import styles from './campaign_modal.module.css'
 
-export default function CampaignModal({ isOpen, onClose, campaigns, loading }) {
+import Pagination from './pagination'
+
+export default function CampaignModal({
+  isOpen,
+  onClose,
+  campaigns,
+  loading,
+  currentPage,
+  totalPages,
+  onChangePage,
+}) {
   if (!isOpen) return null
 
   return (
@@ -24,7 +34,14 @@ export default function CampaignModal({ isOpen, onClose, campaigns, loading }) {
           ) : campaigns.length === 0 ? (
             <p className={styles.empty}>Nenhuma campanha criada ainda.</p>
           ) : (
-            <CampaignList campaigns={campaigns} />
+            <>
+              <CampaignList campaigns={campaigns} />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onChangePage={onChangePage}
+              />
+            </>
           )}
         </div>
       </div>

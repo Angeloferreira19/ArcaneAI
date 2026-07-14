@@ -31,7 +31,7 @@
 .form-container input:focus,
 .form-container textarea:focus,
 .form-container select:focus {
-  border-color: var(--clr-pink);
+  border-color: var(--clr-gold);
   outline: none;
 }
 

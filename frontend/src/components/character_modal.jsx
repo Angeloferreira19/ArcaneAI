@@ -1,6 +1,16 @@
 import styles from './character_modal.module.css'
 
-export default function CharacterModal({ isOpen, onClose, characters, loading }) {
+import Pagination from './pagination'
+
+export default function CharacterModal({
+  isOpen,
+  onClose,
+  characters,
+  loading,
+  currentPage,
+  totalPages,
+  onChangePage,
+}) {
   if (!isOpen) return null
 
   return (
@@ -23,14 +33,21 @@ export default function CharacterModal({ isOpen, onClose, characters, loading })
           ) : characters.length === 0 ? (
             <p className={styles.empty}>Nenhum personagem criado ainda.</p>
           ) : (
-            <ul className={styles.list}>
-              {characters.map((character) => (
-                <li key={character.id} className={styles.item}>
-                  <h3>{character.name}</h3>
-                  <p>{character.description}</p>
-                </li>
-              ))}
-            </ul>
+            <>
+              <ul className={styles.list}>
+                {characters.map((character) => (
+                  <li key={character.id} className={styles.item}>
+                    <h3>{character.name}</h3>
+                    <p>{character.description}</p>
+                  </li>
+                ))}
+              </ul>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onChangePage={onChangePage}
+              />
+            </>
           )}
         </div>
       </div>
