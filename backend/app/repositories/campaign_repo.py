@@ -33,3 +33,19 @@ class CampaignRepository:
             return self.collection.find_one({"_id": ObjectId(campaign_id)})
         except InvalidId:
             return None
+
+    def update_campaign(self, campaign_id, update_data):
+        try:
+            object_id = ObjectId(campaign_id)
+        except InvalidId:
+            return None
+        self.collection.update_one({"_id": object_id}, {"$set": update_data})
+        return self.collection.find_one({"_id": object_id})
+
+    def delete_campaign(self, campaign_id):
+        try:
+            object_id = ObjectId(campaign_id)
+        except InvalidId:
+            return False
+        result = self.collection.delete_one({"_id": object_id})
+        return result.deleted_count > 0

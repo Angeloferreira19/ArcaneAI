@@ -13,3 +13,7 @@ class CharacterResponse(BaseModel):
     description: str
     campaign_id: str
     owner_id: Optional[str] = None
+
+class CharacterUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None

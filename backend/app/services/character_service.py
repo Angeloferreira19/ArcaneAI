@@ -8,44 +8,79 @@ class CharacterService:
         self.repository = CharacterRepository()
         self.campaign_service = CampaignService()
 
-    def create_character(self, data):
-        # Validação de campaign_id
-        if not data.get('campaign_id'):
-            raise HTTPException(status_code=400, detail="campaign_id é obrigatório")
-        
-        # Valida se campanha existe
-        self.campaign_service.get_campaign_by_id(data['campaign_id'])
-        
-        character_data = {
-            'name': data['name'],
-            'description': data['description'],
-            'campaign_id': data['campaign_id'],
-            'owner_id': data.get('owner_id')
-        }
-        character = self.repository.create(character_data)
-        if not character:
-            raise HTTPException(status_code=500, detail="Erro ao criar personagem.")
-
+    @staticmethod
+    def _serialize(character):
         character['id'] = str(character['_id'])
         character.pop('_id', None)
         return character
 
+    def create_character(self, data):
+        if not data.get('campaign_id'):
+            raise HTTPException(status_code=400, detail="campaign_id é obrigatório")
+
+        owner_id = data.get('owner_id')
+
+        # valida que a campanha existe E pertence ao usuário atual
+        self.campaign_service.get_campaign_detail(owner_id, data['campaign_id'])
+
+        character_data = {
+            'name': data['name'],
+            'description': data['description'],
+            'campaign_id': data['campaign_id'],
+            'owner_id': owner_id
+        }
+        character = self.repository.create(character_data)
+        if not character:
+            raise HTTPException(status_code=500, detail="Erro ao criar personagem.")
+        return self._serialize(character)
+
     def get_characters(self, owner_id):
         characters = self.repository.list_by_owner(owner_id)
-        for character in characters:
-            character['id'] = str(character['_id'])
-            character.pop('_id', None)
-        return characters
+        return [self._serialize(c) for c in characters]
 
     def get_characters_paginated(self, owner_id, page=1, page_size=10):
         result = self.repository.list_by_owner_paginated(owner_id, page, page_size)
-        
-        for character in result['items']:
-            character['id'] = str(character['_id'])
-            character.pop('_id', None)
-        
         return {
-            "items": result['items'],
+            "items": [self._serialize(c) for c in result['items']],
+            "total": result['total'],
+            "pages": result['pages'],
+            "current_page": result['current_page'],
+            "page_size": result['page_size']
+        }
+
+    def update_character(self, owner_id, character_id, data):
+        character = self.repository.find_by_id(character_id)
+        if not character:
+            raise HTTPException(status_code=404, detail="Personagem não encontrado.")
+        if character.get('owner_id') != owner_id:
+            raise HTTPException(status_code=403, detail="Você não tem permissão para editar este personagem.")
+
+        update_data = {k: v for k, v in data.items() if v is not None}
+        if not update_data:
+            return self._serialize(character)
+
+        updated = self.repository.update(character_id, update_data)
+        return self._serialize(updated)
+
+    def delete_character(self, owner_id, character_id):
+        character = self.repository.find_by_id(character_id)
+        if not character:
+            raise HTTPException(status_code=404, detail="Personagem não encontrado.")
+            
+        if character.get('owner_id') != owner_id:
+            raise HTTPException(status_code=403, detail="Você não tem permissão para deletar este personagem.")
+
+        deleted = self.repository.delete(character_id)
+        if not deleted:
+            raise HTTPException(status_code=500, detail="Erro ao deletar personagem.")
+        return {"message": "Personagem deletado com sucesso."}
+
+    def get_characters_by_campaign_paginated(self, owner_id, campaign_id, page=1, page_size=10):
+        self.campaign_service.get_campaign_detail(owner_id, campaign_id)  # valida dono + existência
+
+        result = self.repository.list_by_owner_and_campaign_paginated(owner_id, campaign_id, page, page_size)
+        return {
+            "items": [self._serialize(c) for c in result['items']],
             "total": result['total'],
             "pages": result['pages'],
             "current_page": result['current_page'],

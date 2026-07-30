@@ -36,3 +36,23 @@ class CharacterRepository:
             return self.collection.find_one({"_id": ObjectId(character_id)})
         except InvalidId:
             return None
+
+    def update(self, character_id, update_data):
+        try:
+            object_id = ObjectId(character_id)
+        except InvalidId:
+            return None
+        self.collection.update_one({"_id": object_id}, {"$set": update_data})
+        return self.collection.find_one({"_id": object_id})
+
+    def delete(self, character_id):
+        try:
+            object_id = ObjectId(character_id)
+        except InvalidId:
+            return False
+        result = self.collection.delete_one({"_id": object_id})
+        return result.deleted_count > 0
+
+    def delete_by_campaign(self, campaign_id):
+        result = self.collection.delete_many({"campaign_id": campaign_id})
+        return result.deleted_count

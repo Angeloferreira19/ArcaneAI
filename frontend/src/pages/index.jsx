@@ -95,7 +95,7 @@ export default function Home() {
         } catch (err) {
           setMessage(err.message)
         }
-      }, 5000)
+      }, 1000)
     } catch (err) {
       setMessage(err.message)
     } finally {
