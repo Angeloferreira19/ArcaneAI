@@ -6,6 +6,8 @@ import CharacterForm from './character_form'
 import CharacterModal from './character_modal'
 import CampaignModal from './campaign_modal'
 import styles from './dashboard.module.css'
+import CampaignEditModal from './campaign_edit_modal'
+import CharacterEditModal from './character_edit_modal'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -13,16 +15,19 @@ export default function Dashboard({ user, onLogout, onBrandClick }) {
   const [campaigns, setCampaigns] = useState([])
   const [campaignsSelect, setCampaignsSelect] = useState([])
   const [campaignsSelectLoading, setCampaignsSelectLoading] = useState(false)
-
   const [characters, setCharacters] = useState([])
   const [loading, setLoading] = useState(true)
   const [loadingCharacters, setLoadingCharacters] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isModalOpenCampaigns, setIsModalOpenCampaigns] = useState(false)
+  const [campaignEditOpen, setCampaignEditOpen] = useState(false)
+  const [campaignToEdit, setCampaignToEdit] = useState(null)
   const [campaignPage, setCampaignPage] = useState(1)
   const [campaignTotalPages, setCampaignTotalPages] = useState(1)
   const [characterPage, setCharacterPage] = useState(1)
   const [characterTotalPages, setCharacterTotalPages] = useState(1)
+  const [characterEditOpen, setCharacterEditOpen] = useState(false)
+  const [characterToEdit, setCharacterToEdit] = useState(null)
   const token = typeof window !== 'undefined' ? localStorage.getItem('arcane_token') : null
 
   const fetchCampaigns = useCallback(async (page = 1) => {
@@ -65,6 +70,15 @@ export default function Dashboard({ user, onLogout, onBrandClick }) {
     fetchCampaignsSelect()
   }, [token, fetchCampaigns, fetchCampaignsSelect])
 
+  const openCampaignEditModal = (campaign) => {
+    setCampaignToEdit(campaign)
+    setCampaignEditOpen(true)
+  }
+
+  const handleSaveCampaign = async (CampaignData) => {
+    await updateCampaign(campaignToEdit.id, CampaignData)
+    setCampaignEditOpen(false)
+  }
 
   const createCampaign = async (campaignData) => {
     const response = await fetch(`${API_URL}/campaigns`, {
@@ -78,6 +92,55 @@ export default function Dashboard({ user, onLogout, onBrandClick }) {
     const data = await response.json()
     if (!response.ok) throw new Error(data.detail || 'Erro ao criar campanha')
     setCampaigns((prev) => [...prev, data])
+    setCampaignsSelect((prev) => [...prev, data])
+  }
+
+  const updateCampaign = async (campaignId, campaignData) => {
+    const response = await fetch(`${API_URL}/campaigns/${campaignId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(campaignData),
+    })
+    const data = await response.json()
+    if (!response.ok) throw new Error(data.detail || 'Erro ao atualizar campanha')
+
+    // Atualiza a campanha na lista local
+    setCampaigns((prev) =>
+    prev.map((c) => (c.id === campaignId ? data : c))
+    )
+
+    // Recarrega para sincronizar paginação
+    await fetchCampaigns(campaignPage)
+  }
+
+  const deleteCampaign = async (campaignId) => {
+    if (!window.confirm('Tem certeza de deletar a campanha? \n Todos os personagens vinculados também serão deletados')) {
+      return
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/campaigns/${campaignId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.detail || 'Erro ao deletar campanha')
+      }
+
+      // remove da lista atual
+      setCampaigns((prev) => prev.filter((c) => c.id !== campaignId))
+
+      // Resincronizar
+      await fetchCampaigns(1)
+    } catch (error) {
+      alert(`Erro: ${error.message}`)
+    }
   }
 
   const createCharacter = async (characterData) => {
@@ -92,6 +155,55 @@ export default function Dashboard({ user, onLogout, onBrandClick }) {
     const data = await response.json()
     if (!response.ok) throw new Error(data.detail || 'Erro ao criar personagem')
     return data
+  }
+
+  const updateCharacter = async (characterId, characterData) => {
+    const response = await fetch(`${API_URL}/characters/${characterId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(characterData),
+    })
+    const data = await response.json()
+    if (!response.ok) throw new Error(data.detail || 'Erro ao atualizar personagem')
+    
+    // Atualiza o personagem na lista local
+    setCharacters((prev) =>
+      prev.map((c) => (c.id === characterId ? data : c))
+    )
+
+    // Recarrega para sincronizar
+    await fetchCharacters(characterPage)
+  }
+
+  const deleteCharacter = async (characterId) => {
+    if (!window.confirm('Tem certeza de deletar o personagem?')) {
+      return
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/characters/${characterId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.detail || 'Erro ao deletar personagem')
+      }
+
+      // remove da lista atual
+      setCharacters((prev) => prev.filter((c) => c.id !== characterId))
+
+      // Resincronizar
+      await fetchCharacters(1)
+    } catch (error) {
+      alert(`Erro: ${error.message}`)
+    }
   }
 
   const fetchCharacters = useCallback(async (page = 1) => {
@@ -112,13 +224,23 @@ export default function Dashboard({ user, onLogout, onBrandClick }) {
     }
   }, [token])
 
+  const openCampaignsModal = async () => {
+    setIsModalOpenCampaigns(true)
+  }
+
   const openCharactersModal = async () => {
     setIsModalOpen(true)
     await fetchCharacters(1)
   }
 
-  const openCampaignsModal = async () => {
-    setIsModalOpenCampaigns(true)
+  const openCharacterEditModal = (character) => {
+    setCharacterToEdit(character)
+    setCharacterEditOpen(true)
+  }
+
+  const handleSaveCharacter = async (characterData) => {
+    await updateCharacter(characterToEdit.id, characterData)
+    setCharacterEditOpen(false)
   }
 
   return (
@@ -174,8 +296,16 @@ export default function Dashboard({ user, onLogout, onBrandClick }) {
             setCampaignPage(pageToFetch)
             await fetchCampaigns(pageToFetch)
           }}
+          onEdit={openCampaignEditModal}
+          onDelete={deleteCampaign}
         />
 
+        <CampaignEditModal
+          isOpen={campaignEditOpen}
+          campaign={campaignToEdit}
+          onClose={() => setCampaignEditOpen(false)}
+          onSave={handleSaveCampaign}
+        />
 
         <CharacterModal
           isOpen={isModalOpen}
@@ -189,7 +319,16 @@ export default function Dashboard({ user, onLogout, onBrandClick }) {
             setCharacterPage(pageToFetch)
             await fetchCharacters(pageToFetch)
           }}
+          onEdit={openCharacterEditModal}
+          onDelete={deleteCharacter}
+        />
 
+        <CharacterEditModal
+          isOpen={characterEditOpen}
+          character={characterToEdit}
+          campaigns={campaignsSelect}
+          onClose={() => setCharacterEditOpen(false)}
+          onSave={handleSaveCharacter}
         />
       </main>
     </div>

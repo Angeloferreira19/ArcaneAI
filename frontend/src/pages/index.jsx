@@ -5,6 +5,9 @@ import Dashboard from '../components/dashboard'
 import Header from '../components/header'
 import Footer from '../components/footer'
 import headerStyles from '../components/header.module.css'
+import CampaignModal from '../components/campaign_modal'
+import styles from '../components/dashboard.module.css'
+import CampaignEditModal from '../components/campaign_edit_modal'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 

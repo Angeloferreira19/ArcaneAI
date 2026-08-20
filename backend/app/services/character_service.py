@@ -15,13 +15,11 @@ class CharacterService:
         return character
 
     def create_character(self, data):
-        if not data.get('campaign_id'):
-            raise HTTPException(status_code=400, detail="campaign_id é obrigatório")
-
         owner_id = data.get('owner_id')
 
         # valida que a campanha existe E pertence ao usuário atual
-        self.campaign_service.get_campaign_detail(owner_id, data['campaign_id'])
+        if data.get('campaign_id'):
+            self.campaign_service.get_campaign_detail(owner_id, data['campaign_id'])
 
         character_data = {
             'name': data['name'],
@@ -55,7 +53,14 @@ class CharacterService:
         if character.get('owner_id') != owner_id:
             raise HTTPException(status_code=403, detail="Você não tem permissão para editar este personagem.")
 
-        update_data = {k: v for k, v in data.items() if v is not None}
+        if data.get('campaign_id'):
+            self.campaign_service.get_campaign_detail(owner_id, data['campaign_id'])
+
+        update_data = {
+            key: value
+            for key, value in data.items()
+            if value is not None or key == 'campaign_id'
+        }
         if not update_data:
             return self._serialize(character)
 

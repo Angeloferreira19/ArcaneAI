@@ -28,7 +28,7 @@ def list_characters(
 
 @router.put("/{character_id}", response_model=CharacterResponse)
 def update_character(character_id: str, data: CharacterUpdate, current_user: dict = Depends(get_current_user)):
-    return service.update_character(current_user["id"], character_id, data.dict())
+    return service.update_character(current_user["id"], character_id, data.dict(exclude_unset=True))
 
 @router.delete("/{character_id}")
 def delete_character(character_id: str, current_user: dict = Depends(get_current_user)):

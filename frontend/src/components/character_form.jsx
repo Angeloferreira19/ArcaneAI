@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import styles from './form_styles.module.css'
 
 export default function CharacterForm({ campaigns, onCreate }) {
@@ -8,38 +8,18 @@ export default function CharacterForm({ campaigns, onCreate }) {
     const [message, setMessage] = useState('')
     const isSuccessMessage = message && (message.toLowerCase().includes('sucesso') || message.toLowerCase().includes('criado'))
     
-    // Atualiza campaignId quando campaigns mudar
-    useEffect(() => {
-        if (campaigns.length > 0 && !campaignId) {
-            setCampaignId(campaigns[0].id)
-        }
-    }, [campaigns, campaignId])
-
     const handleSubmit = async (e) => {
         e.preventDefault()
-        
-        if (!campaignId) {
-            setMessage('Por favor, selecione uma campanha')
-            return
-        }
 
         setMessage('')
         try {
-            await onCreate({ name, description, campaign_id: campaignId })
+            await onCreate({ name, description, campaign_id: campaignId || null })
             setName('')
             setDescription('')
             setMessage('Personagem criado com sucesso!')
         } catch (error) {
             setMessage(error.message || 'Erro ao criar personagem')
         }
-    }
-
-    if (campaigns.length === 0) {
-        return (
-            <div className={styles['form-container']}>
-                <p>{`Nenhuma campanha disponível. Crie uma campanha primeiro.`}</p>
-            </div>
-        )
     }
 
     return (
@@ -61,10 +41,9 @@ export default function CharacterForm({ campaigns, onCreate }) {
                     <select
                         value={campaignId}
                         onChange={(e) => setCampaignId(e.target.value)}
-                        required
                         className={styles['campaign-select']}
-
                     >
+                        <option value="">Não Linkado</option>
                         {campaigns.map((campaign) => (
                             <option key={campaign.id} value={campaign.id}>
                                 {campaign.name}

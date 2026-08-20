@@ -4,16 +4,17 @@ from typing import Optional
 class CharacterCreate(BaseModel):
     name: str
     description: str
-    campaign_id: str
+    campaign_id: Optional[str] = None
     owner_id: Optional[str] = None
 
 class CharacterResponse(BaseModel):
     id: str
     name: str
     description: str
-    campaign_id: str
+    campaign_id: Optional[str] = None
     owner_id: Optional[str] = None
 
 class CharacterUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
+    campaign_id: Optional[str] = None

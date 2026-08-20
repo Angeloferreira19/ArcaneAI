@@ -54,12 +54,18 @@ Arcane utiliza uma arquitetura baseada em backend com FastAPI, frontend com Next
 ### Em funcionamento
 - cadastro de usuário;
 - login com JWT;
-- dashboard básico após autenticação;
-- integração inicial entre frontend e backend.
+- dashboard funcional após autenticação;
+- CRUD completo de campanhas;
+- CRUD completo de personagens;
+- associação de personagens a campanhas;
+- listagem paginada e edição/exclusão integrada no frontend.
+- filtros de personagens por status;
+- filtros de campanhas por progresso narrativo;
+- badges de status coloridos próximos ao título no card interno;
+- separação entre conteúdo e ações nos cards.
 
 ### Próximos passos
-- CRUD de campanhas;
-- CRUD de personagens;
+- detalhamento da campanha e metadata narrativa;
 - sessões narrativas;
 - integração com IA e memória.
 

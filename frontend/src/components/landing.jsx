@@ -17,8 +17,8 @@ export default function Landing({ onLoginClick, onRegisterClick }) {
                 <span className={styles.eyebrow}>Arcane AI</span>
                 <h1 className={styles.title}>RPG narrativo com IA e memória persistente</h1>
                 <p className={styles.description}>
-                    Crie campaingas, jogue sessões e mantenha a história viva entre partidas.
-                    Esta primeira fase traz landing page, login e cadastro.
+                    Crie campanhas, organize personagens e prepare sessões que mantêm a história viva entre partidas.
+                    A base de autenticação, campanhas e personagens já está pronta para a próxima aventura.
                 </p>
                 <div className={styles['landing-actions']}>
                     <button className="btn-primary" onClick={onLoginClick}>
@@ -32,16 +32,20 @@ export default function Landing({ onLoginClick, onRegisterClick }) {
 
             <section className={styles['landing-features']}>
                 <div className={styles.feature}>
-                    <h2>Autenticação Simples</h2>
-                    <p>Login e Cadastro direto conectados ao backend.</p>
+                    <h2>Acesso Seguro</h2>
+                    <p>Cadastro e login com autenticação protegida para manter sua mesa sob seu controle.</p>
                 </div>
                 <div className={styles.feature}>
-                    <h2>Fase 0.1 concluida</h2>
-                    <p>Landing page + formulários + integração com API.</p>
+                    <h2>Campanhas Vivas</h2>
+                    <p>Crie, edite e organize campanhas com descrição, progresso e gerenciamento completo.</p>
                 </div>
                 <div className={styles.feature}>
-                    <h2>Estrutura Modular</h2>
-                    <p>Componentes reutilizáveis e fácil manutenção, separados para evoluir rápido.</p>
+                    <h2>Personagens em Foco</h2>
+                    <p>Associe personagens às campanhas e encontre ativos, mortos ou desvinculados com filtros rápidos.</p>
+                </div>
+                <div className={styles.feature}>
+                    <h2>Próxima Sessão</h2>
+                    <p>A base está preparada para sessões narrativas, histórico de eventos e continuidade assistida por IA.</p>
                 </div>
             </section>
             <Footer />

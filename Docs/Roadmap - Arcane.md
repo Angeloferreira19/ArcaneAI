@@ -1,21 +1,26 @@
 # Roadmap - Arcane
 
-## Status atual (Julho de 2026)
+## Status atual (Agosto de 2026)
 
-O projeto já passou da fase inicial de estruturação e possui uma base funcional de autenticação e interface. A próxima etapa é consolidar as campanhas e personagens.
+O projeto concluiu a V0.2 com campanhas e personagens operando no backend e no frontend, incluindo cadastro, edição, exclusão, associação, paginação e filtros de acompanhamento. A próxima prioridade é a V0.3, com sessões narrativas, histórico e continuidade da experiência do jogo.
 
 ### Concluído
 - backend com FastAPI funcional
 - cadastro e login de usuários
 - JWT e autenticação protegida
-- integração inicial frontend/backend
-- dashboard básico pós-login
+- CRUD de campanhas e personagens
+- associação entre usuário, campanha e personagem
+- dashboard funcional com modais e paginação
+- filtros de personagens por status
+- filtros de campanhas por progresso narrativo
+- badges coloridos posicionados no card interno, próximos ao título
+- separação visual entre card externo de ações e card interno de conteúdo
 - ambiente com Docker Compose
 
 ### Em andamento
-- refinamento visual do frontend
-- melhoria do fluxo de cadastro e login
-- preparação da camada de campanhas
+- **V0.3 Backend**: modelagem de sessões e eventos narrativos
+- **V0.3 Frontend**: interface de sessão com histórico e ações do jogador
+- **Refinamento pós-V0.2**: detalhamento da campanha e metadata narrativa
 
 ---
 
@@ -42,21 +47,48 @@ Objetivo: estabelecer a base técnica do sistema e tornar o projeto executável 
 
 ---
 
-## Versão 0.2 - Campanhas e Personagens ⏳
+## Versão 0.2 - Campanhas e Personagens ✅
 
-Objetivo: permitir criação e gerenciamento de campanhas.
+Objetivo: permitir criação, gerenciamento e visualização funcional de campanhas e personagens, com vínculo entre usuário e conteúdo narrativo.
 
 ### Backend ✅
 - schema de campanha e personagem
 - repositories e services
 - endpoints para CRUD
 - associação entre usuário, campanha e personagem
+- paginação por listagem
+- exclusão com limpeza de personagens vinculados
 
-### Frontend
-- dashboard com lista de campanhas
-- modal ou página para criar campanha
+### Backend 🟨 (refinamento pós-V0.2)
+- adicionar campo `status` ao personagem (alive | dead | unlinked)
+- adicionar `linked_since` ao personagem
+- adicionar `current_location` à campanha
+- criar entidade Session com referência a character
+- criar entidade Consequence para histórico narrativo
+- endpoints de listagem com filtros por status
+- endpoint de detalhes da campanha com metadados avançados
+
+### Frontend ✅
+- dashboard com lista de campanhas (paginado)
+- modal/formulário para criar campanha
+- modal/formulário para editar campanha
+- confirmação e exclusão de campanha
 - tela para criar personagem
-- visualização de detalhes da campanha
+- modal/formulário para editar personagem
+- confirmação e exclusão de personagem
+- associação de personagem à campanha
+- integração com API de campanhas e personagens
+- paginação, carregamento e feedback visual
+- filtros de personagens: Todos, Ativos, Mortos e Desvinculados
+- filtros de campanhas: Tudo em Jogo, A Jornada Começou, Crônicas Encerradas e Ainda no Pergaminho
+- badges de status associados ao conteúdo do card interno conforme princípio de proximidade da IHC
+
+### O que permanece como evolução futura
+- visualização detalhada de campanha em modal completo
+- histórico de consequências e sessões
+- ações narrativas avançadas de continuidade
+
+> A V0.2 está entregue no núcleo e no refinamento de interface. O que permanece depende da modelagem de sessões, status persistido e metadata narrativa, servindo como ponte para a V0.3.
 
 ---
 

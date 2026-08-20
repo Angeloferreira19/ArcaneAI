@@ -21,8 +21,15 @@ ArcaneAI é uma plataforma para criar experiências de RPG com narrativa dinâmi
 - Landing page inicial
 - Formulário de login e cadastro
 - Fluxo de autenticação integrado à API
-- Dashboard básico após login
-- Estilização inicial com tema visual próprio
+- Dashboard funcional após login
+- CRUD de campanhas com criação, edição e exclusão
+- CRUD de personagens com criação, edição e exclusão
+- Associação de personagens a campanhas
+- Listagem paginada e modais de gerenciamento
+- Filtros de personagens por status: ativos, mortos e desvinculados
+- Filtros de campanhas por progresso: jornada iniciada, crônica encerrada e sessão 0
+- Badges de status coloridos associados ao título no card interno
+- Estilização visual consistente com tema próprio
 
 ### Infraestrutura
 - Docker Compose com backend e MongoDB
@@ -45,10 +52,23 @@ Criar uma experiência de RPG em que o usuário possa criar conta, entrar no sis
 - Frontend inicial de autenticação
 - Ambiente local funcional
 
-### Versão 0.2 - Campanhas e Personagens ⏳
+### Versão 0.2 - Campanhas e Personagens ✅
 - CRUD de campanhas
 - CRUD de personagens
 - Associação entre usuário, campanha e personagem
+- Dashboard e modais de gerenciamento
+- Paginação e estado de carregamento
+
+### Refinamento da V0.2 ✅
+- filtros de personagens por status
+- filtros de campanhas por progresso narrativo
+- badges de status coloridos com posicionamento orientado por IHC
+- card interno separado para nome e descrição
+
+### Evolução futura
+- visualização detalhada de campanha
+- histórico de consequências e sessões
+- preparação para a V0.3 narrativa
 
 ### Versão 0.3 - Sessões Narrativas ⏳
 - Sessões de jogo
@@ -119,7 +139,7 @@ docker compose up --build
 
 ## 📌 Próximo passo prioritário
 
-Implementar a camada de campanhas e personagens, consolidando a base de autenticação já entregue e avançando para a experiência narrativa principal do produto.
+Avançar para a V0.3 com sessões narrativas, histórico de mensagens e eventos, aproveitando a base funcional de campanhas e personagens já entregue.
 
 # 🔥 Diferenciais
 

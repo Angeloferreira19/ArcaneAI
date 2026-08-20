@@ -48,7 +48,7 @@
   transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
 }
 
-.form-container button:hover {
+.form-container .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 25px rgba(255, 0, 234, 0.603);
 }
@@ -57,6 +57,17 @@
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
+}
+.form-container .btn-secondary {
+  
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--clr-text);
+}
+
+.btn-secondary:hover {
+  color: black;
+  background: linear-gradient(135deg, var(--clr-blue), var(--clr-green));
+  box-shadow: 0 0 25px var(--clr-accent);
 }
 
 .form-message {

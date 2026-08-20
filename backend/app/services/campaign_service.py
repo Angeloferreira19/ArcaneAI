@@ -1,10 +1,12 @@
 from fastapi import HTTPException
 from bson import ObjectId
 from app.repositories.campaign_repo import CampaignRepository
+from app.repositories.character_repo import CharacterRepository
 
 class CampaignService:
     def __init__(self):
         self.campaign_repo = CampaignRepository()
+        self.character_repo = CharacterRepository()
 
     @staticmethod
     def _serialize(campaign):

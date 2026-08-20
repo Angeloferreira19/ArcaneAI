@@ -70,6 +70,53 @@
   overflow-y: auto;
 }
 
+.toolbar {
+  margin-bottom: 1rem;
+}
+
+.filterGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filterButton {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--clr-text-muted);
+  border-radius: 999px;
+  padding: 0.5rem 0.85rem;
+  cursor: pointer;
+  font: inherit;
+  transition: all var(--transition-smooth);
+}
+
+.filterButton:hover,
+.filterButtonActive {
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.filterButtonall.filterButtonActive {
+  background: rgba(92, 198, 255, 0.2);
+  border-color: #5cc6ff;
+}
+
+.filterButtonstarted.filterButtonActive {
+  background: rgba(76, 211, 145, 0.2);
+  border-color: #4cd391;
+}
+
+.filterButtonfinished.filterButtonActive {
+  background: rgba(255, 106, 106, 0.2);
+  border-color: #ff6a6a;
+}
+
+.filterButtonnot_started.filterButtonActive {
+  background: rgba(255, 184, 77, 0.2);
+  border-color: #ffb84d;
+}
+
 .loading,
 .empty {
   text-align: center;
